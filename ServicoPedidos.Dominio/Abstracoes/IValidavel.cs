@@ -6,6 +6,6 @@ namespace ServicoPedidos.Dominio.Abstracoes
 {
     public interface IValidavel
     {
-        bool Validar();
+        void Validar();
     }
 }
