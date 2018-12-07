@@ -6,6 +6,5 @@ namespace ServicoPedidos.Dominio.Abstracoes
 {
     public interface IClienteDTO : IEntidade
     {
-        int Id { get; }
     }
 }

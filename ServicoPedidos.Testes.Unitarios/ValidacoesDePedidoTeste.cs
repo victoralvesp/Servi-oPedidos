@@ -39,7 +39,7 @@ namespace ServicoPedidos.Testes.Unitarios
         [TestCaseSource(nameof(PedidosRentabilidadeRuim))]
         public void Pedidos_Com_Itens_Com_Rentabilidade_Ruim_Devem_Lancar_Excecao(IPedido pedido)
         {
-            Assert.Throws(typeof(RentabilidadeInvalidaException), () => pedido.Validar(), Mensagens.EXCECAO_QUANTIDADE_INVALIDA());
+            Assert.Throws(typeof(RentabilidadeInvalidaException), () => pedido.Validar());
         }
 
         private static IEnumerable<object[]> ItensValidos()

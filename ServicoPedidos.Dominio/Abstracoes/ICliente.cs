@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ServicoPedidos.Dominio.Abstracoes
 {
-    public interface ICliente
+    public interface ICliente: IEntidade
     {
 
     }
