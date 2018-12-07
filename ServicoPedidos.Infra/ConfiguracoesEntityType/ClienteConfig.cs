@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ServicoPedidos.Infra.ConfiguracoesEntityType
 {
-    public class ClienteConfig : IEntityTypeConfiguration<ClienteModeloBD>
+    public class ClientesEntityTypeConfiguration : IEntityTypeConfiguration<ClienteModeloBD>
     {
         public void Configure(EntityTypeBuilder<ClienteModeloBD> builder)
         {

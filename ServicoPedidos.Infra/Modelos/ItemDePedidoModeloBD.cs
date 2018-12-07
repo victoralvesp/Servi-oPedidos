@@ -7,6 +7,7 @@ namespace ServicoPedidos.Infra.Modelos
 {
     public class ItemDePedidoModeloBD : IItemDePedidoDTO
     {
+
         public int Id { get; set; }
         public int IdPedido { get; internal set; }
         public int IdProduto { get; set; }
@@ -59,5 +60,12 @@ namespace ServicoPedidos.Infra.Modelos
             PrecoUnitario = itemDTO.PrecoUnitario;
         }
 
+        public ItemDePedidoModeloBD(IItemDePedido item)
+        {
+            Id = item.Id;
+            IdProduto = item.Produto.Id;
+            Quantidade = item.Quantidade;
+            PrecoUnitario = item.PrecoUnitario;
+        }
     }
 }

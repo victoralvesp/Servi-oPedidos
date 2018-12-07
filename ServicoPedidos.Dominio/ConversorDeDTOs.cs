@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ServicoPedidos.Dominio
 {
@@ -42,11 +43,11 @@ namespace ServicoPedidos.Dominio
             return itemDePedidoDTO;
         }
 
-        public IPedido ConverterPedidoDTO(IPedidoDTO pedidoDTO)
+        public async Task<IPedido> ConverterParaPedidoAsync(IPedidoDTO pedidoDTO)
         {
-            ICliente clienteDoPedido = _repositorioDePedidos.ObterCliente(pedidoDTO.IdCliente);
-            IDictionary<int, IProduto> produtosDosItensPorId = ObterProdutosDoPedidoParaFacilAcesso(pedidoDTO);
-            IEnumerable<IItemDePedido> itens = ConverteItensDoPedido(pedidoDTO, produtosDosItensPorId);
+            ICliente clienteDoPedido = await _repositorioDePedidos.ObterClienteAsync(pedidoDTO.IdCliente);
+            IDictionary<int, IProduto> produtosDosItensPorId = await ObterProdutosDoPedidoParaFacilAcessoAsync(pedidoDTO);
+            IEnumerable<IItemDePedido> itens = await ConverteItensDoPedido(pedidoDTO, produtosDosItensPorId);
 
             IPedido pedido = new Pedido(clienteDoPedido, itens)
             {
@@ -56,27 +57,15 @@ namespace ServicoPedidos.Dominio
             return pedido;
         }
 
-        private IEnumerable<IItemDePedido> ConverteItensDoPedido(IPedidoDTO pedidoDTO, IDictionary<int, IProduto> produtosDosItensPorId)
+        public async Task<IItemDePedido> ConverteParaItemAsync(IItemDePedidoDTO itemDTO)
         {
-            return pedidoDTO.Itens.Select(itemDTO =>
-            {
-                IProduto produtoDoPedido = produtosDosItensPorId[itemDTO.IdProduto];
-                IItemDePedido item = ConverteParaItem(itemDTO, produtoDoPedido);
-                return item;
-            });
+            IProduto produto = await _repositorioDePedidos.ObterProdutoAsync(itemDTO.IdProduto);
+
+            IItemDePedido item = ConverteParaItem(itemDTO, produto);
+
+            return item;
         }
-
-        private IDictionary<int, IProduto> ObterProdutosDoPedidoParaFacilAcesso(IPedidoDTO pedidoDTO)
-        {
-            IEnumerable<int> idsDosProdutosDosPedidos = pedidoDTO.Itens.Select(itemDTO => itemDTO.IdProduto).Distinct();
-
-            IEnumerable<IProduto> produtosDosPedidos = _repositorioDePedidos.ObterProdutos(idsDosProdutosDosPedidos.ToArray());
-
-            IDictionary<int, IProduto> produtosDosItensPorId = produtosDosPedidos.ToDictionary(produto => produto.Id);
-            return produtosDosItensPorId;
-        }
-
-        public IItemDePedido ConverteParaItem(IItemDePedidoDTO itemDTO, IProduto produtoDoPedido)
+        private IItemDePedido ConverteParaItem(IItemDePedidoDTO itemDTO, IProduto produtoDoPedido)
         {
             IItemDePedido item = new ItemDePedido(produtoDoPedido, itemDTO.PrecoUnitario, itemDTO.Quantidade)
             {
@@ -84,6 +73,36 @@ namespace ServicoPedidos.Dominio
             };
 
             return item;
+        }
+
+        private async Task<IEnumerable<IItemDePedido>> ConverteItensDoPedido(IPedidoDTO pedidoDTO, IDictionary<int, IProduto> produtosDosItensPorId)
+        {
+            return await Task.Run(() => pedidoDTO.Itens.Select(itemDTO =>
+            {
+                IProduto produtoDoPedido = produtosDosItensPorId[itemDTO.IdProduto];
+                IItemDePedido item = ConverteParaItem(itemDTO, produtoDoPedido);
+                return item;
+            }));
+        }
+
+        private async Task<IDictionary<int, IProduto>> ObterProdutosDoPedidoParaFacilAcessoAsync(IPedidoDTO pedidoDTO)
+        {
+            IEnumerable<int> idsDosProdutosDosPedidos = pedidoDTO.Itens.Select(itemDTO => itemDTO.IdProduto).Distinct();
+
+            IEnumerable<IProduto> produtosDosPedidos = await _repositorioDePedidos.ObterProdutosAsync(idsDosProdutosDosPedidos.ToArray());
+
+            IDictionary<int, IProduto> produtosDosItensPorId = produtosDosPedidos.ToDictionary(produto => produto.Id);
+            return produtosDosItensPorId;
+        }
+
+        public ICliente ConverterParaCliente(IClienteDTO clienteBD)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IProduto ConverterParaProduto(IProdutoDTO produtoBD)
+        {
+            throw new NotImplementedException();
         }
     }
 }

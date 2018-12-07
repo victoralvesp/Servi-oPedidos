@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ServicoPedidos.Dominio
 {
-    public class DiretorDeRequisicoesDePedidos
+    public class DiretorDeRequisicoesDePedidos : IDiretorDeRequisicoesDePedidos
     {
         IConversorDeDTOs _conversor;
         IRepositorioDePedidos _repositorioDePedidos;
@@ -18,25 +19,25 @@ namespace ServicoPedidos.Dominio
             _repositorioDePedidos = repositorioDePedidos;
         }
 
-        public IPedidoDTO InserirNovoPedido(IPedidoDTO pedidoDTO)
+        public async Task<IPedidoDTO> InserirNovoPedido(IPedidoDTO pedidoDTO)
         {
-            IPedido pedido = _conversor.ConverterPedidoDTO(pedidoDTO);
+            IPedido pedido = await _conversor.ConverterParaPedidoAsync(pedidoDTO);
 
             pedido.Validar();
 
-            IPedido pedidoSalvo = _repositorioDePedidos.AdicionarPedido(pedido);
+            IPedido pedidoSalvo = await _repositorioDePedidos.AdicionarPedido(pedido);
 
             IPedidoDTO pedidoDTOparaRetorno = _conversor.ConverterParaDTO(pedido);
             return pedidoDTOparaRetorno;
         }
 
-        public IPedidoDTO AlterarPedido(IPedidoDTO pedidoDTO)
+        public async Task<IPedidoDTO> AlterarPedido(IPedidoDTO pedidoDTO)
         {
-            IPedido pedido = _conversor.ConverterPedidoDTO(pedidoDTO);
+            IPedido pedido = await _conversor.ConverterParaPedidoAsync(pedidoDTO);
 
             pedido.Validar();
 
-            IPedido pedidoSalvo = _repositorioDePedidos.AlterarPedido(pedido);
+            IPedido pedidoSalvo = await _repositorioDePedidos.AlterarPedidoAsync(pedido);
 
             IPedidoDTO pedidoDTOparaRetorno = _conversor.ConverterParaDTO(pedido);
             return pedidoDTOparaRetorno;
