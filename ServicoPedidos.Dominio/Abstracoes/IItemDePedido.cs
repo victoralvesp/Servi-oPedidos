@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ServicoPedidos.Dominio.Abstracoes
 {
-    public interface IItemDePedido : IValidavel
+    public interface IItemDePedido : IValidavel, IEntidade
     {
         IProduto Produto { get; }
         Rentabilidade Rentabilidade { get; }

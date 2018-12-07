@@ -4,9 +4,8 @@ using System.Text;
 
 namespace ServicoPedidos.Dominio.Abstracoes
 {
-    public interface IProduto : IEntidade
+    public interface IClienteDTO : IEntidade
     {
-        int Multiplo { get; }
-        ValorMonetario PrecoSugerido { get; }
+        int Id { get; }
     }
 }

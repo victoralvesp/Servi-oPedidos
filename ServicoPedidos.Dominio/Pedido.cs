@@ -11,15 +11,17 @@ namespace ServicoPedidos.Dominio
 {
     public class Pedido : IPedido
     {
+        public int Id { get; set; }
+
+        public ICliente Cliente { get; }
+        
+        public IEnumerable<IItemDePedido> Itens { get; }
+
         public Pedido(ICliente cliente, IEnumerable<IItemDePedido> itens)
         {
             Cliente = cliente;
             Itens = itens;
         }
-
-        public ICliente Cliente { get; }
-        
-        public IEnumerable<IItemDePedido> Itens { get; }
 
         public void Validar()
         {

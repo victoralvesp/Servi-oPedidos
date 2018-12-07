@@ -10,6 +10,7 @@ namespace ServicoPedidos.Dominio
 {
     public class ItemDePedido : IItemDePedido
     {
+        public int Id { get; set; }
         public IProduto Produto { get; }
         private IAnalisadorDeRentabilidade _analisadorDeRentabilidade = new AnalisadorDeRentabilidade();
 

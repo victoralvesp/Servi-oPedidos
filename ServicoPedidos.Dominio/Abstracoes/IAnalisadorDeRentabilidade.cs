@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServicoPedidos.Dominio.Rentabilidades;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
