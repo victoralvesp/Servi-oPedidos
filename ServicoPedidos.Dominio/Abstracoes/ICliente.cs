@@ -4,10 +4,8 @@ using System.Text;
 
 namespace ServicoPedidos.Dominio.Abstracoes
 {
-    public interface IPedido : IValidavel
+    public interface ICliente
     {
-        IEnumerable<IItemDePedido> Itens { get; }
-        ICliente Cliente { get; }
 
     }
 }

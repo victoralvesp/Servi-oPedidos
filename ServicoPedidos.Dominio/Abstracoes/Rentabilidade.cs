@@ -4,23 +4,28 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ServicoPedidos.Dominio
+namespace ServicoPedidos.Dominio.Rentabilidades
 {
     public abstract partial class Rentabilidade : Enumeration<string>, IComparable<Rentabilidade>
     {
-        public static Rentabilidade Otima = new RentabilidadeOtima();
-        public static Rentabilidade Boa = new RentabilidadeBoa();
-        public static Rentabilidade Ruim = new RentabilidadeRuim();
-
+        public abstract int Score { get; }
         protected Rentabilidade(string id, string name) : base(id, name)
         {
         }
 
-        public abstract int Score { get; }
-
         public int CompareTo(Rentabilidade other)
         {
             return Score.CompareTo(other.Score);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public static bool operator >(Rentabilidade a, Rentabilidade b)
@@ -55,30 +60,5 @@ namespace ServicoPedidos.Dominio
 
     }
 
-    internal class RentabilidadeOtima : Rentabilidade
-    {
-        internal RentabilidadeOtima() : base(Constantes.ID_RENTABILIDADE_OTIMA, Constantes.DESCRICAO_RENTABILIDADE_OTIMA)
-        {
-        }
 
-        public override int Score => 1;
-    }
-
-    internal class RentabilidadeBoa : Rentabilidade
-    {
-        internal RentabilidadeBoa() : base(Constantes.ID_RENTABILIDADE_BOA, Constantes.DESCRICAO_RENTABILIDADE_BOA)
-        {
-        }
-
-        public override int Score => 0;
-    }
-
-    internal class RentabilidadeRuim : Rentabilidade
-    {
-        internal RentabilidadeRuim() : base(Constantes.ID_RENTABILIDADE_RUIM, Constantes.DESCRICAO_RENTABILIDADE_RUIM)
-        {
-        }
-
-        public override int Score => -1;
-    }
 }

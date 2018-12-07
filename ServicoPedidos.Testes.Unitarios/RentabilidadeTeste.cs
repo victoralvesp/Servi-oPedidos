@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using ServicoPedidos.Dominio;
 using ServicoPedidos.Dominio.Abstracoes;
+using ServicoPedidos.Dominio.Rentabilidades;
 using System;
 using System.Collections.Generic;
 using System.Text;

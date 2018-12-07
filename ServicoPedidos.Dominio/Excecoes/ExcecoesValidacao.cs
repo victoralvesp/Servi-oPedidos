@@ -39,4 +39,16 @@ namespace ServicoPedidos.Dominio.Excecoes
           System.Runtime.Serialization.SerializationInfo info,
           System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
+
+
+    [Serializable]
+    public class PrecoInvalidoException : Exception
+    {
+        public PrecoInvalidoException() { }
+        public PrecoInvalidoException(string message) : base(message) { }
+        public PrecoInvalidoException(string message, Exception inner) : base(message, inner) { }
+        protected PrecoInvalidoException(
+          System.Runtime.Serialization.SerializationInfo info,
+          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
 }
