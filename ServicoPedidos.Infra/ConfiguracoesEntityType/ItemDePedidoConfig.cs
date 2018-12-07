@@ -5,15 +5,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ServicoPedidos.Infra.ConfiguracoesModelBuilder
+namespace ServicoPedidos.Infra.ConfiguracoesEntityType
 {
     public class ItemDePedidoConfig : IEntityTypeConfiguration<ItemDePedidoModeloBD>
     {
         public void Configure(EntityTypeBuilder<ItemDePedidoModeloBD> builder)
         {
             builder.ToTable("Itens_de_Pedido");
-
+            builder.HasKey(x => x.Id);
             builder.Ignore(x => x.PrecoUnitario);
+
+            builder.HasOne(x => x.Produto).WithOne().HasForeignKey<ItemDePedidoModeloBD>(x => x.IdProduto);
 
             builder.Property(x => x.Id).HasColumnName("id");
             builder.Property(x => x.IdPedido).HasColumnName("id_pedido");

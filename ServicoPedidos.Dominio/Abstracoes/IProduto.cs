@@ -6,6 +6,7 @@ namespace ServicoPedidos.Dominio.Abstracoes
 {
     public interface IProduto : IEntidade
     {
+        string Nome { get; }
         int Multiplo { get; }
         ValorMonetario PrecoSugerido { get; }
     }

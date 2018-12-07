@@ -5,13 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ServicoPedidos.Infra.Configuracoes
+namespace ServicoPedidos.Infra.ConfiguracoesEntityType
 {
     public class PedidosEntityTypeConfiguration : IEntityTypeConfiguration<PedidoModeloBD>
     {
         public void Configure(EntityTypeBuilder<PedidoModeloBD> builder)
         {
             builder.ToTable("Pedidos");
+            builder.HasKey(x => x.Id);
 
             builder.Ignore(x => x.Itens);
 

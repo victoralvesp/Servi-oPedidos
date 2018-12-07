@@ -10,6 +10,7 @@ namespace ServicoPedidos.Infra.Modelos
         public int Id { get; set; }
         public int IdPedido { get; internal set; }
         public int IdProduto { get; set; }
+        public ProdutoModeloBD Produto { get; set; }
         public int Quantidade { get; set; }
         public ValorMonetario PrecoUnitario { get; set; }
         
