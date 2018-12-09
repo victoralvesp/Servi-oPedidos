@@ -7,7 +7,7 @@ namespace ServicoPedidos.Dominio.Abstracoes
     public interface IProdutoDTO : IEntidade
     {
         string Nome { get; set; }
-        int Multiplo { get; set; }
+        int? Multiplo { get; set; }
         ValorMonetario PrecoSugerido { get; set; }
     }
 }

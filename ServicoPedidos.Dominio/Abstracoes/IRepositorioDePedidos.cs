@@ -7,10 +7,12 @@ namespace ServicoPedidos.Dominio.Abstracoes
 {
     public interface IRepositorioDePedidos
     {
-        Task<IPedido> AdicionarPedido(IPedido pedido);
-        Task<ICliente> ObterClienteAsync(int idCliente);
-        Task<IEnumerable<IProduto>> ObterProdutosAsync(int[] idsProdutos);
-        Task<IPedido> AlterarPedidoAsync(IPedido pedido);
-        Task<IProduto> ObterProdutoAsync(int idProduto);
+        Task<IPedidoDTO> AdicionarPedidoAsync(IPedidoDTO pedido);
+        Task<IClienteDTO> ObterClienteAsync(int idCliente);
+        Task<IEnumerable<IProdutoDTO>> ObterProdutosAsync(int[] idsProdutos);
+        Task<IPedidoDTO> AlterarPedidoAsync(IPedidoDTO pedido);
+        Task<IProdutoDTO> ObterProdutoAsync(int idProduto);
+        Task<IEnumerable<IPedidoDTO>> ObterPedidosAsync();
+        Task<IPedidoDTO> ObterPedidoAsync(int idPedido);
     }
 }

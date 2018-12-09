@@ -14,72 +14,88 @@ namespace ServicoPedidos.Infra.Repositorios
     public class RepositorioDePedidos : IRepositorioDePedidos
     {
         private ContextoPedidos _contexto;
-        private IConversorDeDTOs _conversor;
 
-        public RepositorioDePedidos(ContextoPedidos contexto, IConversorDeDTOs conversor)
+        public RepositorioDePedidos(ContextoPedidos contexto)
         {
             _contexto = contexto;
-            _conversor = conversor;
         }
 
-        public Task<IPedido> AdicionarPedido(IPedido pedido)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IPedido> AdicionarPedidoAsync(IPedido pedido)
+        public async Task<IPedidoDTO> AdicionarPedidoAsync(IPedidoDTO pedido)
         {
             PedidoModeloBD pedidoBD = new PedidoModeloBD(pedido); 
 
             _contexto.Add(pedidoBD);
-            _contexto.AddRange(pedidoBD.ItensBD);
+            _contexto.AddRange(pedidoBD.ItensBD.ToList());
 
             await _contexto.SaveChangesAsync();
 
-            IPedido pedidoSalvo = await _conversor.ConverterParaPedidoAsync(pedidoBD);
+            
 
-            return pedidoSalvo;
+            return pedidoBD;
         }
 
-        public async Task<IPedido> AlterarPedidoAsync(IPedido pedido)
+        public async Task<IPedidoDTO> AlterarPedidoAsync(IPedidoDTO pedido)
         {
             PedidoModeloBD pedidoBD = new PedidoModeloBD(pedido);
 
             _contexto.Update(pedidoBD);
-            _contexto.UpdateRange(pedidoBD.ItensBD);
+            AtualizaItensDoPedido(pedidoBD);
 
             await _contexto.SaveChangesAsync();
 
-            IPedido pedidoSalvo = await _conversor.ConverterParaPedidoAsync(pedidoBD);
 
+            IPedidoDTO pedidoSalvo = await ObterPedidoAsync(pedidoBD.Id);
+
+            
             return pedidoSalvo;
         }
 
-        public async Task<ICliente> ObterClienteAsync(int idCliente)
+        private void AtualizaItensDoPedido(PedidoModeloBD pedidoBD)
+        {
+            IEnumerable<ItemDePedidoModeloBD> itensBD = pedidoBD.ItensBD;
+            int[] idsItens = itensBD.Select(item => item.Id).Where(id => id > 0).Distinct().ToArray();
+            _contexto.UpdateRange(itensBD.Where(item => item.Id > 0).ToList());
+            IQueryable<ItemDePedidoModeloBD> entities = _contexto.ItensDePedido.Where(item => item.IdPedido == pedidoBD.Id && !idsItens.Contains(item.Id));
+            _contexto.RemoveRange(entities);
+            _contexto.AddRange(itensBD.Where(item => item.Id <= 0).ToList());
+        }
+
+        public async Task<IClienteDTO> ObterClienteAsync(int idCliente)
         {
             ClienteModeloBD clienteBD = await _contexto.Clientes.FindAsync(idCliente);
-
-            ICliente cliente = _conversor.ConverterParaCliente(clienteBD);
-
-            return cliente;
+           
+            return clienteBD;
         }
 
-        public async Task<IProduto> ObterProdutoAsync(int idProduto)
+        public async Task<IPedidoDTO> ObterPedidoAsync(int idPedido)
+        {
+            PedidoModeloBD pedidoDTO = await ((from pedido in _contexto.Pedidos.Include(x => x.ItensBD)
+                                              where pedido.Id == idPedido
+                                              select pedido).SingleAsync());
+
+
+            return pedidoDTO;
+        }
+
+        public async Task<IEnumerable<IPedidoDTO>> ObterPedidosAsync()
+        {
+            IEnumerable<IPedidoDTO> pedidosDTO = await _contexto.Pedidos.Include(x => x.ItensBD).ToArrayAsync();
+            
+            return pedidosDTO;
+        }
+
+        public async Task<IProdutoDTO> ObterProdutoAsync(int idProduto)
         {
             ProdutoModeloBD produtoBD = await _contexto.Produtos.FindAsync(idProduto);
-
-            IProduto produto = _conversor.ConverterParaProduto(produtoBD);
-
-            return produto;
+            
+            return produtoBD;
         }
 
-        public async Task<IEnumerable<IProduto>> ObterProdutosAsync(int[] idsProdutos)
+        public async Task<IEnumerable<IProdutoDTO>> ObterProdutosAsync(int[] idsProdutos)
         {
             IEnumerable<ProdutoModeloBD> produtosBD = await _contexto.Produtos.ToArrayAsync();
 
-            IEnumerable<IProduto> produtos = produtosBD.Select(produtoBD => _conversor.ConverterParaProduto(produtoBD));
-
-            return produtos;
+            return produtosBD;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace ServicoPedidos.Dominio.DTOs
     {
         public int Id { get; set; }
 
-        public int Multiplo { get; set; }
+        public int? Multiplo { get; set; }
         public string Nome { get; set; }
         public ValorMonetario PrecoSugerido { get; set; }
     }

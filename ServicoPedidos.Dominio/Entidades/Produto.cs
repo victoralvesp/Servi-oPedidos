@@ -7,10 +7,18 @@ namespace ServicoPedidos.Dominio
 {
     public class Produto : IProduto
     {
-        public Produto(string nome, int multiplo, ValorMonetario precoSugerido)
+        public Produto(string nome, ValorMonetario precoSugerido, int? multiplo)
         {
             Nome = nome;
-            Multiplo = multiplo;
+            if(multiplo == null || multiplo == 0)
+            {
+                Multiplo = 1;
+            }
+            else
+            {
+                Multiplo = multiplo.Value;
+            }
+
             PrecoSugerido = precoSugerido;
         }
 

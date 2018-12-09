@@ -38,7 +38,7 @@ namespace ServicoPedidos.Testes.Unitarios.Unitarios
 
         private static IEnumerable<object[]> TestCasesRentabilidade()
         {
-            Produto produto = new Produto("Produto teste", 1, new ValorMonetario(100));
+            Produto produto = new Produto("Produto teste", new ValorMonetario(100), 1);
             yield return new object[] { new ItemDePedido(produto, new ValorMonetario(90), 10), Rentabilidade.Boa };
             yield return new object[] { new ItemDePedido(produto, new ValorMonetario(100.1M), 10), Rentabilidade.Otima };
             yield return new object[] { new ItemDePedido(produto, new ValorMonetario(89.99M), 10), Rentabilidade.Ruim };

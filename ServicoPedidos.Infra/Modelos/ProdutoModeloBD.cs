@@ -8,7 +8,7 @@ namespace ServicoPedidos.Infra.Modelos
     public class ProdutoModeloBD : IProdutoDTO
     {
         public string Nome { get; set; }
-        public int Multiplo { get; set; }
+        public int? Multiplo { get; set; }
         public int Id { get; set; }
         public ValorMonetario PrecoSugerido { get; set; }
 

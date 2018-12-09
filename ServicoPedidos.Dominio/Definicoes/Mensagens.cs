@@ -19,7 +19,9 @@ namespace ServicoPedidos.Dominio.Definicoes
         public const string EXCECAO_RENTABILIDADE_INVALIDA = "Pedidos não podem conter itens com rentabilidade ruim.";
         
 
-        public const string EXCECAO_PEDIDO_INVALIDO = "Pedidos devem ter ao menos um item";
+        public const string EXCECAO_PEDIDO_INVALIDO_SEM_ITEM = "Pedidos devem ter ao menos um item";
+
+        public const string EXCECAO_PEDIDO_INVALIDO = "Pedidos invalido. Favor checar validade dos itens do pedido";
 
     }
 }

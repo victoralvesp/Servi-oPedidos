@@ -20,6 +20,13 @@ namespace ServicoPedidos.Infra.Modelos
             IdCliente = pedido.Cliente.Id;
         }
 
+        public PedidoModeloBD(IPedidoDTO pedido)
+        {
+            Id = pedido.Id;
+            ItensBD = pedido.Itens.Select(item => new ItemDePedidoModeloBD(item)).ToList();
+            IdCliente = pedido.IdCliente;
+        }
+
         public IEnumerable<IItemDePedidoDTO> Itens { get => ItensBD; set => value.Select(item => new ItemDePedidoModeloBD(item) { IdPedido = this.Id }); }
         public int IdCliente { get; set; }
         public int Id { get; set; }

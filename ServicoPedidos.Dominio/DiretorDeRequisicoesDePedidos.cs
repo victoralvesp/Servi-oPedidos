@@ -25,10 +25,9 @@ namespace ServicoPedidos.Dominio
 
             pedido.Validar();
 
-            IPedido pedidoSalvo = await _repositorioDePedidos.AdicionarPedido(pedido);
-
-            IPedidoDTO pedidoDTOparaRetorno = _conversor.ConverterParaDTO(pedido);
-            return pedidoDTOparaRetorno;
+            IPedidoDTO pedidoSalvo = await _repositorioDePedidos.AdicionarPedidoAsync(pedidoDTO);
+            
+            return pedidoSalvo;
         }
 
         public async Task<IPedidoDTO> AlterarPedido(IPedidoDTO pedidoDTO)
@@ -37,10 +36,9 @@ namespace ServicoPedidos.Dominio
 
             pedido.Validar();
 
-            IPedido pedidoSalvo = await _repositorioDePedidos.AlterarPedidoAsync(pedido);
+            IPedidoDTO pedidoSalvo = await _repositorioDePedidos.AlterarPedidoAsync(pedidoDTO);
 
-            IPedidoDTO pedidoDTOparaRetorno = _conversor.ConverterParaDTO(pedido);
-            return pedidoDTOparaRetorno;
+            return pedidoSalvo;
         }
 
     }

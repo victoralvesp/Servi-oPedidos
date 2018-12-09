@@ -45,7 +45,8 @@ namespace ServicoPedidos.Dominio
 
         public async Task<IPedido> ConverterParaPedidoAsync(IPedidoDTO pedidoDTO)
         {
-            ICliente clienteDoPedido = await _repositorioDePedidos.ObterClienteAsync(pedidoDTO.IdCliente);
+            IClienteDTO clienteDoPedidoDTO = await _repositorioDePedidos.ObterClienteAsync(pedidoDTO.IdCliente);
+            ICliente clienteDoPedido = ConverterParaCliente(clienteDoPedidoDTO);
             IDictionary<int, IProduto> produtosDosItensPorId = await ObterProdutosDoPedidoParaFacilAcessoAsync(pedidoDTO);
             IEnumerable<IItemDePedido> itens = await ConverteItensDoPedido(pedidoDTO, produtosDosItensPorId);
 
@@ -59,7 +60,9 @@ namespace ServicoPedidos.Dominio
 
         public async Task<IItemDePedido> ConverteParaItemAsync(IItemDePedidoDTO itemDTO)
         {
-            IProduto produto = await _repositorioDePedidos.ObterProdutoAsync(itemDTO.IdProduto);
+            IProdutoDTO produtoDTO = await _repositorioDePedidos.ObterProdutoAsync(itemDTO.IdProduto);
+
+            IProduto produto = ConverterParaProduto(produtoDTO);
 
             IItemDePedido item = ConverteParaItem(itemDTO, produto);
 
@@ -89,20 +92,37 @@ namespace ServicoPedidos.Dominio
         {
             IEnumerable<int> idsDosProdutosDosPedidos = pedidoDTO.Itens.Select(itemDTO => itemDTO.IdProduto).Distinct();
 
-            IEnumerable<IProduto> produtosDosPedidos = await _repositorioDePedidos.ObterProdutosAsync(idsDosProdutosDosPedidos.ToArray());
+            IEnumerable<IProdutoDTO> produtosDoPedidosDTO = await _repositorioDePedidos.ObterProdutosAsync(idsDosProdutosDosPedidos.ToArray());
 
-            IDictionary<int, IProduto> produtosDosItensPorId = produtosDosPedidos.ToDictionary(produto => produto.Id);
+            IEnumerable<IProduto> produtosDoPedido = produtosDoPedidosDTO.Select(produto => ConverterParaProduto(produto));
+
+            IDictionary<int, IProduto> produtosDosItensPorId = produtosDoPedido.ToDictionary(produto => produto.Id);
             return produtosDosItensPorId;
         }
 
-        public ICliente ConverterParaCliente(IClienteDTO clienteBD)
+        public ICliente ConverterParaCliente(IClienteDTO clienteDTO)
         {
-            throw new NotImplementedException();
+            return new Cliente(clienteDTO.Nome) { Id = clienteDTO.Id };
         }
 
-        public IProduto ConverterParaProduto(IProdutoDTO produtoBD)
+        public IProduto ConverterParaProduto(IProdutoDTO produtoDTO)
         {
-            throw new NotImplementedException();
+            int multiplo = produtoDTO.Multiplo ?? 1;
+            return new Produto(produtoDTO.Nome, produtoDTO.PrecoSugerido, multiplo) { Id = produtoDTO.Id };
+        }
+
+        public async Task<IEnumerable<IPedido>> ConverterParaPedidosAsync(IEnumerable<IPedidoDTO> pedidosDTO)
+        {
+            List<Task<IPedido>> tasks = new List<Task<IPedido>>();
+
+            foreach (var pedidoDTO in pedidosDTO)
+            {
+                tasks.Add(ConverterParaPedidoAsync(pedidoDTO));
+            }
+
+            await Task.WhenAll(tasks);
+
+            return tasks.Select(task => task.Result).ToArray();
         }
     }
 }

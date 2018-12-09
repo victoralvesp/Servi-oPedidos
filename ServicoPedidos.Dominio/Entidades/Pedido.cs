@@ -25,24 +25,39 @@ namespace ServicoPedidos.Dominio
 
         public void Validar()
         {
-            if(Itens?.Count() > 0)
+            var exceptions = new List<Exception>();
+
+            if (Itens?.Count() > 0)
             {
+                Rentabilidade menorRentabilidadeDosItens = Itens.Min(item => item.Rentabilidade);
+                if (menorRentabilidadeDosItens <= Rentabilidade.Ruim)
+                {
+                    exceptions.Add(new RentabilidadeInvalidaException(Mensagens.EXCECAO_RENTABILIDADE_INVALIDA));
+                }
                 foreach (var item in Itens)
                 {
-                    item.Validar();
+                    try
+                    {
+                        item.Validar();
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Add(ex);
+                    }
                 }
             }
             else
             {
-                throw new PedidoInvalidoException(Mensagens.EXCECAO_PEDIDO_INVALIDO);
+                throw new PedidoInvalidoException(Mensagens.EXCECAO_PEDIDO_INVALIDO_SEM_ITEM);
             }
 
-            Rentabilidade menorRentabilidadeDosItens = Itens.Min(item => item.Rentabilidade);
-
-            if(menorRentabilidadeDosItens <= Rentabilidade.Ruim)
+            if (exceptions.Count() > 0)
             {
-                throw new RentabilidadeInvalidaException(Mensagens.EXCECAO_RENTABILIDADE_INVALIDA);
+                Exception aggregate = new AggregateException(exceptions);
+
+                throw new PedidoInvalidoException(Mensagens.EXCECAO_PEDIDO_INVALIDO, aggregate);
             }
+
         }
     }
 }
