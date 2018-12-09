@@ -49,7 +49,7 @@ namespace ServicoPedidos.Testes.Integracao.Infra
             pedidosDaBaseAntes = taskObterPedidos.Result.ToArray();
 
             //Act
-            Task<IPedidoDTO> taskInserirNovoPedido = _diretor.InserirNovoPedido(pedido);
+            Task<IPedidoDTO> taskInserirNovoPedido = _diretor.InserirNovoPedidoAsync(pedido);
             taskInserirNovoPedido.Wait();
             pedidoSalvo = taskInserirNovoPedido.Result;
 
@@ -68,7 +68,7 @@ namespace ServicoPedidos.Testes.Integracao.Infra
         public void Deve_Lancar_Excecao_Para_Pedido_Invalido(IPedidoDTO pedido)
         {
             //Arrange & Act
-            Task<IPedidoDTO> taskInserirNovoPedido = _diretor.InserirNovoPedido(pedido);
+            Task<IPedidoDTO> taskInserirNovoPedido = _diretor.InserirNovoPedidoAsync(pedido);
 
             //Assert
             Assert.Throws(typeof(AggregateException), () => taskInserirNovoPedido.Wait());
@@ -91,7 +91,7 @@ namespace ServicoPedidos.Testes.Integracao.Infra
             }
 
             //Act
-            Task<IPedidoDTO> taskPedidoDepois = _diretor.AlterarPedido(pedido);
+            Task<IPedidoDTO> taskPedidoDepois = _diretor.AlterarPedidoAsync(pedido);
             taskPedidoDepois.Wait();
             IPedidoDTO pedidoDepois = taskPedidoDepois.Result;
 
@@ -114,7 +114,7 @@ namespace ServicoPedidos.Testes.Integracao.Infra
             }
 
             //Act
-            Task<IPedidoDTO> taskPedidoDepois = _diretor.AlterarPedido(pedido);
+            Task<IPedidoDTO> taskPedidoDepois = _diretor.AlterarPedidoAsync(pedido);
             taskPedidoDepois.Wait();
             IPedidoDTO pedidoDepois = taskPedidoDepois.Result;
 

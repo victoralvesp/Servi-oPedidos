@@ -23,19 +23,23 @@ namespace ServicoPedidos.WebAPI.Controllers
             this._diretorDeRequisicoes = diretorDeRequisicoes;
         }
 
-        // GET api/values
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        //GET pedidos/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            IPedidoDTO pedido;
 
-        // GET api/values/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+            try
+            {
+                pedido = await _diretorDeRequisicoes.ObterPedidoAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+            return base.Ok(pedido);
+        }
 
         // POST pedidos
         [HttpPost]
@@ -46,7 +50,7 @@ namespace ServicoPedidos.WebAPI.Controllers
             try
             {
                 //IPedidoDTO pedido = ConverteJsonParaDTO(pedidoJson["pedido"].ToString());
-                pedidoSalvo = await _diretorDeRequisicoes.InserirNovoPedido(pedido);
+                pedidoSalvo = await _diretorDeRequisicoes.InserirNovoPedidoAsync(pedido);
             }
             catch (Exception ex)
             {
@@ -66,7 +70,7 @@ namespace ServicoPedidos.WebAPI.Controllers
             try
             {
                 //IPedidoDTO pedido = ConverteJsonParaDTO(pedidoJson["pedido"].ToString());
-                pedidoSalvo = await _diretorDeRequisicoes.AlterarPedido(pedido);
+                pedidoSalvo = await _diretorDeRequisicoes.AlterarPedidoAsync(pedido);
             }
             catch (Exception ex)
             {

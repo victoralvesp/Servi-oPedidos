@@ -5,7 +5,8 @@ namespace ServicoPedidos.Dominio
 {
     public interface IDiretorDeRequisicoesDePedidos
     {
-        Task<IPedidoDTO> AlterarPedido(IPedidoDTO pedidoDTO);
-        Task<IPedidoDTO> InserirNovoPedido(IPedidoDTO pedidoDTO);
+        Task<IPedidoDTO> AlterarPedidoAsync(IPedidoDTO pedidoDTO);
+        Task<IPedidoDTO> InserirNovoPedidoAsync(IPedidoDTO pedidoDTO);
+        Task<IPedidoDTO> ObterPedidoAsync(int id);
     }
 }

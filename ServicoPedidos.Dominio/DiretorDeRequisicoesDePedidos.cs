@@ -19,7 +19,7 @@ namespace ServicoPedidos.Dominio
             _repositorioDePedidos = repositorioDePedidos;
         }
 
-        public async Task<IPedidoDTO> InserirNovoPedido(IPedidoDTO pedidoDTO)
+        public async Task<IPedidoDTO> InserirNovoPedidoAsync(IPedidoDTO pedidoDTO)
         {
             IPedido pedido = await _conversor.ConverterParaPedidoAsync(pedidoDTO);
 
@@ -30,7 +30,7 @@ namespace ServicoPedidos.Dominio
             return pedidoSalvo;
         }
 
-        public async Task<IPedidoDTO> AlterarPedido(IPedidoDTO pedidoDTO)
+        public async Task<IPedidoDTO> AlterarPedidoAsync(IPedidoDTO pedidoDTO)
         {
             IPedido pedido = await _conversor.ConverterParaPedidoAsync(pedidoDTO);
 
@@ -41,5 +41,9 @@ namespace ServicoPedidos.Dominio
             return pedidoSalvo;
         }
 
+        public async Task<IPedidoDTO> ObterPedidoAsync(int id)
+        {
+            return await _repositorioDePedidos.ObterPedidoAsync(id);
+        }
     }
 }
