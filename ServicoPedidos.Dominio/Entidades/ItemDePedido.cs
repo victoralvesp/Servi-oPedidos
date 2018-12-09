@@ -40,7 +40,7 @@ namespace ServicoPedidos.Dominio
 
         public void Validar()
         {
-            if(Quantidade % Produto.Multiplo != 0)
+            if(Quantidade == 0 || Quantidade % Produto.Multiplo != 0)
             {
                 throw new QuantidadeInvalidaException(Mensagens.EXCECAO_QUANTIDADE_INVALIDA(Produto.Multiplo.ToString()));
             }

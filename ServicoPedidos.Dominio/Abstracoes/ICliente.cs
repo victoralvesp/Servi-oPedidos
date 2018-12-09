@@ -6,6 +6,6 @@ namespace ServicoPedidos.Dominio.Abstracoes
 {
     public interface ICliente: IEntidade
     {
-
+        string Nome { get; }
     }
 }

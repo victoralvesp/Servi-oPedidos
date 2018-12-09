@@ -14,5 +14,7 @@ namespace ServicoPedidos.Dominio.Definicoes
 
         public const string DESCRICAO_RENTABILIDADE_RUIM = "Rentabilidade ruim";
         public const string ID_RENTABILIDADE_RUIM = "RUIM";
+
+        public const int DIFERENCA_MAXIMA_RENTABILIDADE_BOA = 10;
     }
 }

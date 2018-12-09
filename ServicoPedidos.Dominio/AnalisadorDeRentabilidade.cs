@@ -1,4 +1,5 @@
 ﻿using ServicoPedidos.Dominio.Abstracoes;
+using ServicoPedidos.Dominio.Definicoes;
 using ServicoPedidos.Dominio.Rentabilidades;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace ServicoPedidos.Dominio
 {
     public class AnalisadorDeRentabilidade : IAnalisadorDeRentabilidade
     {
+        
         public Rentabilidade CalcularRentabilidade(ValorMonetario precoSugerido, ValorMonetario precoUnitario)
         {
             if (precoUnitario > precoSugerido)
@@ -20,7 +22,7 @@ namespace ServicoPedidos.Dominio
 
                 decimal escalaDaDiferencaEmPercentual = diferencaNoPreco / precoSugerido * 100;
 
-                if(escalaDaDiferencaEmPercentual >= 10)
+                if(escalaDaDiferencaEmPercentual <= Constantes.DIFERENCA_MAXIMA_RENTABILIDADE_BOA)
                 {
                     return Rentabilidade.Boa;
                 }

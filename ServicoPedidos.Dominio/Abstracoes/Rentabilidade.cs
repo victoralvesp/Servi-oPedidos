@@ -38,16 +38,6 @@ namespace ServicoPedidos.Dominio.Rentabilidades
             return a.CompareTo(b) < 0;
         }
 
-        public static bool operator ==(Rentabilidade lhs, Rentabilidade rhs)
-        {
-            return lhs.Equals(rhs);
-        }
-
-        public static bool operator !=(Rentabilidade lhs, Rentabilidade rhs)
-        {
-            return !lhs.Equals(rhs);
-        }
-
         public static bool operator >=(Rentabilidade lhs, Rentabilidade rhs)
         {
             return lhs > rhs || lhs == rhs;
