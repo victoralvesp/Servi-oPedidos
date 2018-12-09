@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Formatters.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@ using ServicoPedidos.Dominio;
 using ServicoPedidos.Dominio.Abstracoes;
 using ServicoPedidos.Infra.Contextos;
 using ServicoPedidos.Infra.Repositorios;
+using ServicoPedidos.WebAPI.JsonConverters;
 
 namespace ServicoPedidos.WebAPI
 {
@@ -28,9 +30,14 @@ namespace ServicoPedidos.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            
+            services.AddMvc()
+                    .AddJsonOptions(options =>
+                    {
+                        options.SerializerSettings.ContractResolver = new JsonContractResolverPadrao();
+                    });
 
-            services.AddDbContext<ContextoPedidos>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ContextoPedidos>(options => options.UseSqlServer(Configuration.GetConnectionString("ConexaoPedidos")));
 
             services.AddScoped<IDiretorDeRequisicoesDePedidos, DiretorDeRequisicoesDePedidos>();
             services.AddScoped<IConversorDeDTOs, ConversorDeDTOs>();
