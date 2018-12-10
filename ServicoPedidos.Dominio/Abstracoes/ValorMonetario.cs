@@ -142,24 +142,11 @@ namespace ServicoPedidos.Dominio.Abstracoes
             }
         }
 
-        public override string ToString()
+        public string ToStringSimplificada()
         {
             return Valor.ToString() + SEPARATOR + Moeda.Id;
         }
 
-        public string ToString(string format)
-        {
-            return Valor.ToString(format) + SEPARATOR + Moeda.Id;
-        }
-
-        public string ToString(string format, IFormatProvider formatProvider)
-        {
-            return Valor.ToString(format, formatProvider) + SEPARATOR + Moeda.Id;
-        }
-        public string ToString(IFormatProvider provider)
-        {
-            return Valor.ToString(provider) + SEPARATOR + Moeda.Id;
-        }
 
         public static ValorMonetario operator *(ValorMonetario a, decimal k)
         {

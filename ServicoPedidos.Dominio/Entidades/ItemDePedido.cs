@@ -47,7 +47,7 @@ namespace ServicoPedidos.Dominio
             
             if(PrecoUnitario.Valor <= 0)
             {
-                throw new PrecoInvalidoException(Mensagens.EXCECAO_PRECO_INVALIDO(PrecoUnitario.ToString()));
+                throw new PrecoInvalidoException(Mensagens.EXCECAO_PRECO_INVALIDO(PrecoUnitario.ToStringSimplificada()));
             }
         }
     }

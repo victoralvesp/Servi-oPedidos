@@ -16,7 +16,7 @@ namespace ServicoPedidos.WebAPI.JsonConverters
         private const string PropriedadeValor = nameof(ValorMonetario.Valor);
         private const string PropriedadeMoeda = nameof(ValorMonetario.Moeda);
 
-        public override bool CanWrite => true;
+        public override bool CanWrite => false;
         public override bool CanRead => true;
 
         public override bool CanConvert(Type objectType)
@@ -34,7 +34,7 @@ namespace ServicoPedidos.WebAPI.JsonConverters
             decimal valor;
             string idMoeda;
             Moeda moeda;
-            if (decimal.TryParse(ValorMonetarioBase, style: NumberStyles.Currency, provider: CultureInfo.InvariantCulture, result: out valor))
+            if (decimal.TryParse(ValorMonetarioBase, style: NumberStyles.Currency, provider: CultureInfo.CurrentCulture, result: out valor))
             {
                 JToken jToken = jsonObject.GetValue(PropriedadeMoeda, StringComparison.OrdinalIgnoreCase);
 
@@ -50,7 +50,7 @@ namespace ServicoPedidos.WebAPI.JsonConverters
             }
             else
             {
-                valor = decimal.Parse(pedacosDoValorMonetario[0], style: NumberStyles.Currency, provider: CultureInfo.InvariantCulture);
+                valor = decimal.Parse(pedacosDoValorMonetario[0], style: NumberStyles.Currency, provider: CultureInfo.CurrentCulture);
 
                 idMoeda = pedacosDoValorMonetario[1];
                 moeda = Moeda.Obtem(idMoeda);
@@ -73,7 +73,7 @@ namespace ServicoPedidos.WebAPI.JsonConverters
 
             if (value is ValorMonetario ValorMonetario)
             {
-                string valorSerializado = ValorMonetario.ToString(numberOfDecimalPlaces);
+                string valorSerializado = ValorMonetario.ToString();
                 writer.WritePropertyName(PropriedadeValor);
                 writer.WriteValue(valorSerializado);
             }

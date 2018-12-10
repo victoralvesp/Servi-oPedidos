@@ -93,9 +93,23 @@ namespace ServicoPedidos.Infra.Repositorios
 
         public async Task<IEnumerable<IProdutoDTO>> ObterProdutosAsync(int[] idsProdutos)
         {
+            IEnumerable<ProdutoModeloBD> produtosBD = await _contexto.Produtos.Where(pr => idsProdutos.Contains(pr.Id)).ToArrayAsync();
+
+            return produtosBD;
+        }
+
+        public async Task<IEnumerable<IProdutoDTO>> ObterProdutosAsync()
+        {
             IEnumerable<ProdutoModeloBD> produtosBD = await _contexto.Produtos.ToArrayAsync();
 
             return produtosBD;
+        }
+
+        public async Task<IEnumerable<IClienteDTO>> ObterClientesAsync()
+        {
+            IEnumerable<ClienteModeloBD> clientesBD = await _contexto.Clientes.ToArrayAsync();
+
+            return clientesBD;
         }
     }
 }

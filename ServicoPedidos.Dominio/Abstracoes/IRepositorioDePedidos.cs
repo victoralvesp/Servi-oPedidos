@@ -9,6 +9,8 @@ namespace ServicoPedidos.Dominio.Abstracoes
     {
         Task<IPedidoDTO> AdicionarPedidoAsync(IPedidoDTO pedido);
         Task<IClienteDTO> ObterClienteAsync(int idCliente);
+        Task<IEnumerable<IClienteDTO>> ObterClientesAsync();
+        Task<IEnumerable<IProdutoDTO>> ObterProdutosAsync();
         Task<IEnumerable<IProdutoDTO>> ObterProdutosAsync(int[] idsProdutos);
         Task<IPedidoDTO> AlterarPedidoAsync(IPedidoDTO pedido);
         Task<IProdutoDTO> ObterProdutoAsync(int idProduto);

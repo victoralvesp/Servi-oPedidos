@@ -9,10 +9,12 @@ using Newtonsoft.Json.Linq;
 using ServicoPedidos.Dominio;
 using ServicoPedidos.Dominio.Abstracoes;
 using ServicoPedidos.Dominio.DTOs;
+using ServicoPedidos.Dominio.Rentabilidades;
 using ServicoPedidos.WebAPI.JsonConverters;
 
 namespace ServicoPedidos.WebAPI.Controllers
 {
+    [Produces("application/json")]
     [Route("pedidos")]
     public class PedidosController : Controller
     {
@@ -79,7 +81,25 @@ namespace ServicoPedidos.WebAPI.Controllers
 
             return base.Ok(pedidoSalvo);
         }
-        
+
+        //GET pedidos/rentabilidade?
+        [HttpGet("rentabilidade")]
+        public async Task<IActionResult> Get(ValorMonetario precoSugerido, ValorMonetario precoUnitario)
+        {
+            Rentabilidade rentabilidade;
+
+            try
+            {
+                rentabilidade = await _diretorDeRequisicoes.CalcularRentabilidade(precoSugerido, precoUnitario);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+            return base.Ok(rentabilidade);
+        }
+
         //private IPedidoDTO ConverteJsonParaDTO(string pedidoJson)
         //{
         //    JsonSerializerSettings settings = new JsonSerializerSettings() { ContractResolver = new JsonContractResolverPadrao() };

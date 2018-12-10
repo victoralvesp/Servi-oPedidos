@@ -1,5 +1,6 @@
 ﻿using ServicoPedidos.Dominio.Abstracoes;
 using ServicoPedidos.Dominio.DTOs;
+using ServicoPedidos.Dominio.Rentabilidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace ServicoPedidos.Dominio
     {
         IConversorDeDTOs _conversor;
         IRepositorioDePedidos _repositorioDePedidos;
+        IAnalisadorDeRentabilidade _analisador = new AnalisadorDeRentabilidade();
 
         public DiretorDeRequisicoesDePedidos(IConversorDeDTOs conversor, IRepositorioDePedidos repositorioDePedidos)
         {
@@ -44,6 +46,21 @@ namespace ServicoPedidos.Dominio
         public async Task<IPedidoDTO> ObterPedidoAsync(int id)
         {
             return await _repositorioDePedidos.ObterPedidoAsync(id);
+        }
+
+        public async Task<Rentabilidade> CalcularRentabilidade(ValorMonetario precoSugerido, ValorMonetario precoUnitario)
+        {
+            return _analisador.CalcularRentabilidade(precoSugerido, precoUnitario);
+        }
+
+        public Task<IEnumerable<IClienteDTO>> ObterClientes()
+        {
+            return _repositorioDePedidos.ObterClientesAsync();
+        }
+
+        public Task<IEnumerable<IProdutoDTO>> ObterProdutos()
+        {
+            return _repositorioDePedidos.ObterProdutosAsync();
         }
     }
 }
