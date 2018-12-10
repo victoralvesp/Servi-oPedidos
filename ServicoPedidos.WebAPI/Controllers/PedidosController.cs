@@ -84,13 +84,15 @@ namespace ServicoPedidos.WebAPI.Controllers
 
         //GET pedidos/rentabilidade?
         [HttpGet("rentabilidade")]
-        public async Task<IActionResult> Get(ValorMonetario precoSugerido, ValorMonetario precoUnitario)
+        public async Task<IActionResult> Get(string precoSugerido, string precoUnitario)
         {
             Rentabilidade rentabilidade;
 
             try
             {
-                rentabilidade = await _diretorDeRequisicoes.CalcularRentabilidade(precoSugerido, precoUnitario);
+                ValorMonetario precoSugeridoModelo = ConverteJsonParaModelo(ConverteEmJson(precoSugerido));
+                ValorMonetario precoUnitarioModelo = ConverteJsonParaModelo(ConverteEmJson(precoUnitario));
+                rentabilidade = await _diretorDeRequisicoes.CalcularRentabilidade(precoSugeridoModelo, precoUnitarioModelo);
             }
             catch (Exception ex)
             {
@@ -100,10 +102,25 @@ namespace ServicoPedidos.WebAPI.Controllers
             return base.Ok(rentabilidade);
         }
 
-        //private IPedidoDTO ConverteJsonParaDTO(string pedidoJson)
-        //{
-        //    JsonSerializerSettings settings = new JsonSerializerSettings() { ContractResolver = new JsonContractResolverPadrao() };
-        //    return JsonConvert.DeserializeObject<PedidoDTO>(pedidoJson, settings);
-        //}
+        private static string ConverteEmJson(string precoSugerido)
+        {
+            return "{ valor: '" + precoSugerido + "' }";
+        }
+
+        private IPedidoDTO ConverteJsonParaDTO(string pedidoJson)
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings() { ContractResolver = new JsonContractResolverPadrao() };
+            return JsonConvert.DeserializeObject<PedidoDTO>(pedidoJson, settings);
+        }
+
+        private ValorMonetario ConverteJsonParaModelo(string valorMonetario)
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings() { ContractResolver = new JsonContractResolverPadrao() };
+            return JsonConvert.DeserializeObject<ValorMonetario>(valorMonetario, settings);
+        }
+
+
+
+
     }
 }

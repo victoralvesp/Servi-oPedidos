@@ -39,10 +39,6 @@ namespace ServicoPedidos.WebAPI.JsonConverters
             }
 
 
-
-
-
-
             if (!conversorEncontrado && objectType == typeof(ValorMonetario))
             {
                 conversorEncontrado = true;

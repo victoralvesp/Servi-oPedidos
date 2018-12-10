@@ -29,6 +29,10 @@ namespace ServicoPedidos.WebAPI.JsonConverters
             {
                 jobEnumId = jsonObject["id"];
             }
+            if (!jEnumerable.Equals(JEnumerable<JToken>.Empty) && jsonObject["Id"] != null)
+            {
+                jobEnumId = jsonObject["Id"];
+            }
 
             Type enumGenType = typeof(Enumeration<>);
 
